@@ -7,11 +7,9 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
-local Camera = Workspace.CurrentCamera
 
--- Store original player position and camera settings
+-- Store original player position
 local oldPlayerPos = HumanoidRootPart.Position
-local originalCameraMaxZoomDistance = 0
 
 -- Find the "prompt" object
 local washMachine = Workspace:WaitForChild("WashingMachine")
@@ -20,7 +18,7 @@ local prompt = washMachine:WaitForChild("Interaction"):FindFirstChildWhichIsA("P
 if not prompt then
     warn("ProximityPrompt not found.")
 else
-    -- SETTING PROXIMPTYPROMPT PROPERTIES
+    -- SETTING PROXIMITYPROMPT PROPERTIES
     prompt.Enabled = true
     prompt.HoldDuration = 0
     prompt.MaxActivationDistance = 12
@@ -60,12 +58,8 @@ toggleButton.Parent = frame
 
 -- Scripting the logic
 toggleButton.MouseButton1Click:Connect(function()
-    -- Get original position and camera settings before teleporting
+    -- Get original position before teleporting
     oldPlayerPos = HumanoidRootPart.Position
-    originalCameraMaxZoomDistance = Camera.CameraMaxZoomDistance
-    
-    -- Force first person mode
-    Camera.CameraMaxZoomDistance = 0
     
     -- Teleport to the washing machine instantly
     HumanoidRootPart.CFrame = CFrame.new(washMachine.Position)
@@ -82,9 +76,6 @@ toggleButton.MouseButton1Click:Connect(function()
     
     -- Teleport back to the original position
     HumanoidRootPart.CFrame = CFrame.new(oldPlayerPos)
-    
-    -- Restore original camera settings
-    Camera.CameraMaxZoomDistance = originalCameraMaxZoomDistance
     
     toggleButton.Text = "START"
 end)
