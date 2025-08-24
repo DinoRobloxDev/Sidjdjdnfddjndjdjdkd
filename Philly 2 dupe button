@@ -11,12 +11,16 @@ local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 -- Store original player position
 local oldPlayerPos = HumanoidRootPart.Position
 
--- Find the "prompt" object
+-- Find the "prompt" object in a more reliable way
 local washMachine = Workspace:WaitForChild("WashingMachine")
-local prompt = washMachine:WaitForChild("Interaction"):FindFirstChildWhichIsA("ProximityPrompt", true)
+local prompt = nil
+if washMachine then
+    -- Find the ProximityPrompt anywhere under the WashingMachine
+    prompt = washMachine:FindFirstChildWhichIsA("ProximityPrompt", true)
+end
 
 if not prompt then
-    warn("ProximityPrompt not found.")
+    warn("ProximityPrompt not found. The object might have a different hierarchy or name.")
 else
     -- SETTING PROXIMITYPROMPT PROPERTIES
     prompt.Enabled = true
